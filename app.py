@@ -1,9 +1,10 @@
 from flask import Flask, request
+import threading
+import time
+import requests
 
-# Criando a aplicação Flask
 app = Flask(__name__)
 
-# Criando uma rota responde tipo GET por padrão
 @app.route('/')
 def root():
     return 'Olá mundo!'
@@ -20,6 +21,17 @@ def submit():
         </form>
     '''
 
-# Habilita mostrar erro e porta
-if __name__ == '__main__':
+def run_server():
     app.run(debug=True, port=5152)
+
+# Inicia servidor em uma thread separada
+threading.Thread(target=run_server, daemon=True).start()
+
+# Aguarda o servidor iniciar
+time.sleep(1)
+
+response = requests.post(
+    'http://127.0.0.1:5152/cadastro',
+    data={'nome': 'Programador Aventureiro'}
+)
+print(response.text)
