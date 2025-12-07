@@ -1,5 +1,6 @@
 from flask import Flask, request
 import threading
+import time
 import requests
 
 app = Flask(__name__)
@@ -19,6 +20,15 @@ def submit():
             <input type="submit" value="Enviar" />
         </form>
     '''
+
+def run_server():
+    app.run(debug=True, port=5152)
+
+# Inicia servidor em uma thread separada
+threading.Thread(target=run_server, daemon=True).start()
+
+# Aguarda o servidor iniciar
+time.sleep(1)
 
 response = requests.post(
     'http://127.0.0.1:5152/cadastro',
