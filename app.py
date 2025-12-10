@@ -1,18 +1,22 @@
 from flask import Flask, request
-import threading
-import requests
+# import threading
+# import requests
+
 
 app = Flask(__name__)
 
 @app.route('/')
 def root():
+    # Rota principal retorna uma mensagem simples
     return 'Olá mundo!'
 
-@app.route('/cadastro', methods=['GET', 'POST'])
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
+    # Rota para envio de dados via formulário
     if request.method == 'POST':
         data = request.form['nome']
         return f'Você enviou: {data}'
+    # Exibe formulário HTML para envio do nome
     return '''
         <form method="POST">
             Nome: <input type="text" name="nome" />
@@ -20,8 +24,8 @@ def submit():
         </form>
     '''
 
-response = requests.post(
-    'http://127.0.0.1:5152/cadastro',
-    data={'nome': 'Programador Aventureiro'}
-)
-print(response.text)
+
+# Para garantir que o servidor rode na porta correta (5000),
+# adicione o bloco abaixo ao final do arquivo:
+if __name__ == "__main__":
+    app.run(port=5000)
